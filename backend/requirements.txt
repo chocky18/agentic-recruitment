@@ -1,0 +1,8 @@
+fastapi
+uvicorn[standard]
+python-dotenv
+openai
+pinecone-client
+docx2txt
+pdfplumber
+strawberry-graphql
