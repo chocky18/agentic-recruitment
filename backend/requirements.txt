@@ -2,7 +2,8 @@ fastapi
 uvicorn[standard]
 python-dotenv
 openai
-pinecone-client
+pinecone
 docx2txt
 pdfplumber
 strawberry-graphql
+
