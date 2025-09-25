@@ -149,7 +149,8 @@ app = FastAPI(title="Recruitment Agentic Backend")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],  # frontend
+    allow_origins=["http://localhost:3000", "https://agentic-recruitment.vercel.app",
+        "https://agentic-recruitment-on37fv0j2-naresh-tinnaluris-projects.vercel.app"],  # frontend
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -346,4 +347,6 @@ app.mount("/graphql", graphql_app)
 # Run
 # ------------------------------------
 if __name__ == "__main__":
-    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
+    port = int(os.getenv("PORT", 8000))  # Render injects PORT
+    uvicorn.run("main:app", host="0.0.0.0", port=port, reload=True)
+
