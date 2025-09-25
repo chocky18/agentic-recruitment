@@ -18,7 +18,7 @@ import strawberry
 from strawberry.asgi import GraphQL
 
 from fastapi.middleware.cors import CORSMiddleware
-
+import uuid
 # ------------------------------------
 # ENV + Logging
 # ------------------------------------
