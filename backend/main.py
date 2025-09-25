@@ -188,7 +188,7 @@ async def upload_resumes(files: List[UploadFile] = File(...)):
         # Extract metadata
         metadata = extract_metadata(text)
 
-        # Sanitize metadata: ensure Pinecone accepts all values
+        # Sanitize metadata
         metadata_sanitized = {
             "name": metadata.get("name") or "Unknown",
             "designation": metadata.get("designation") or "Unknown",
@@ -200,11 +200,15 @@ async def upload_resumes(files: List[UploadFile] = File(...)):
         # Chunk text and upsert
         for i, chunk in enumerate(chunk_text(text, 500)):
             emb = get_embedding(chunk)
+
+            # Generate safe ASCII ID
+            vector_id = str(uuid.uuid4())  # always unique & ASCII
+
             index.upsert(
                 vectors=[{
-                    "id": f"{metadata_sanitized['name']}_{i}",
+                    "id": vector_id,
                     "values": emb,
-                    "metadata": metadata_sanitized
+                    "metadata": metadata_sanitized  # keep original name here
                 }]
             )
 
