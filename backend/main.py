@@ -75,11 +75,24 @@ def get_embedding(text: str):
 
 
 def extract_metadata(text: str):
-    """Very simplified metadata extractor via GPT."""
+    """Metadata extractor with auto-translation to English for multi-lingual resumes."""
     prompt = f"""
-    Extract JSON metadata from resume text:
-    Keys: name, designation, skills, experience_years, location
-    Text: {text[:1000]}
+    The following is a resume text which could be in any language.
+    1. Detect the language. 
+    2. If not English, translate it to English.
+    3. Extract JSON metadata from the resume text.
+    
+    JSON keys:
+      - name
+      - designation
+      - skills
+      - experience_years
+      - location
+    
+    Return only valid JSON.
+    
+    Resume text (first 1000 chars):
+    {text[:1000]}
     """
     try:
         resp = client.chat.completions.create(
@@ -91,8 +104,13 @@ def extract_metadata(text: str):
         raw = re.sub(r"^```json\s*|\s*```$", "", raw, flags=re.MULTILINE).strip()
         return json.loads(raw)
     except Exception:
-        return {"name": "Unknown", "designation": None, "skills": [], "experience_years": 0, "location": None}
-
+        return {
+            "name": "Unknown",
+            "designation": None,
+            "skills": [],
+            "experience_years": 0,
+            "location": None
+        }
 
 def generate_jd(role, years, location, skills=None):
     """Generate JD JSON from GPT, with defaults if input is missing."""
