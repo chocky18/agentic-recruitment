@@ -6,4 +6,4 @@ pinecone
 docx2txt
 pdfplumber
 strawberry-graphql
-
+python-multipart
